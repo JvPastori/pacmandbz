@@ -4,6 +4,18 @@ import sys
 # Inicializa o Pygame
 pygame.init()
 
+# Caminho para o arquivo de som (Certifique-se que é o seu arquivo .wav)
+CAMINHO_SOM_CLIQUE = 'client/assets/click.wav' 
+
+som_clique = None
+try:
+    # Carrega o som
+    som_clique = pygame.mixer.Sound(CAMINHO_SOM_CLIQUE)
+except pygame.error as e:
+    print(f"Erro ao carregar o som: {CAMINHO_SOM_CLIQUE}. {e}")
+    print("O som de clique não estará disponível.")
+
+
 # --- CONFIGURAÇÕES DA TELA ---
 LARGURA = 800
 ALTURA = 600
@@ -133,6 +145,14 @@ def desenhar_janela_popup(titulo_texto, cor_fundo, cor_borda, x, y, largura, alt
         txt = fonte_pequena.render(linha, True, cor)
         TELA.blit(txt, (x + 30, y + 80 + i * 28))
 
+
+# --- FUNÇÃO PARA TOCAR O SOM ---
+def tocar_som_clique():
+    """Toca o som de clique se ele foi carregado."""
+    if som_clique:
+        som_clique.play()
+
+
 # --- LOOP PRINCIPAL DO MENU ---
 
 def menu_principal():
@@ -172,17 +192,23 @@ def menu_principal():
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 if not pop_aberto:
                     if botao_jogar.collidepoint(evento.pos):
+                        tocar_som_clique()  # Som ao iniciar
                         print("🎮 JOGO INICIADO!")
                     elif botao_ajuda.collidepoint(evento.pos): 
+                        tocar_som_clique()  # Som ao abrir Ajuda
                         mostrar_ajuda = True 
                     elif botao_sobre.collidepoint(evento.pos):
+                        tocar_som_clique()  # Som ao abrir Sobre
                         mostrar_sobre = True
                     elif botao_sair.collidepoint(evento.pos):
+                        tocar_som_clique()  # Som ao sair
                         pygame.quit()
                         sys.exit()
             
+            # --- CORREÇÃO: Removendo som do ESC ---
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_ESCAPE and pop_aberto:
+                    # tocar_som_clique() <-- REMOVIDO para que ESC não faça barulho
                     mostrar_sobre = False
                     mostrar_ajuda = False 
         
