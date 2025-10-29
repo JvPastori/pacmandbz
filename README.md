@@ -29,3 +29,37 @@ No **Pac-Man de Dragon Ball**, a Pygame será responsável por:
 - **Controlar o movimento** dos personagens e a detecção de colisões;
 - **Gerenciar as telas iniciais** (menu, instruções e créditos);
 - **Tocar os sons** de coleta das esferas e efeitos especiais (como o “Kamehameha”).
+
+## 📋 Pré-requisitos
+
+Para executar este projeto, você precisará ter o Python e a biblioteca Pygame instalados.
+
+* **Python 3.12
+* **Pygame**
+
+Instalar o Pygame usando o `pip` no seu terminal (CMD, PowerShell ou Bash):
+
+```bash
+pip install pygame
+```
+## 🚀 Como Executar o Projeto
+
+**IMPORTANTE:** O script `menu.py` utiliza caminhos relativos (ex: `client/assets/...`). Por causa disso, ele **precisa** ser executado a partir da pasta raiz do projeto, que é a `pacman_project`.
+
+Siga estes passos para garantir que o programa encontre todos os arquivos (imagens, sons, fontes):
+
+1.  Abra seu terminal (PowerShell, CMD, Bash, etc.).
+
+2.  Navegue com o comando `cd` (change directory) até a pasta `pacman_project` que está dentro do diretório principal.
+
+    *(Ajuste o caminho abaixo para o local onde você salvou a pasta do projeto)*
+    ```bash
+    # Exemplo de caminho:
+    cd C:\Users\SeuUsuario\Downloads\pacmandbz-main\pacmandbz-main\pacman_project
+    ```
+
+3.  Uma vez que seu terminal esteja **dentro** da pasta `pacman_project`, execute o script do menu, que está na subpasta `client`:
+
+    ```bash
+    python client/menu.py
+    ```
