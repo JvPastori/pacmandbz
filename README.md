@@ -34,7 +34,7 @@ No **Pac-Man de Dragon Ball**, a Pygame será responsável por:
 
 Para executar este projeto, você precisará ter o Python e a biblioteca Pygame instalados.
 
-* **Python 3.12
+* **Python 3.12**
 * **Pygame**
 
 Instalar o Pygame usando o `pip` no seu terminal (CMD, PowerShell ou Bash):
