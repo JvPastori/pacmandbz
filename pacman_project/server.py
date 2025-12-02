@@ -43,7 +43,6 @@ class GameServer:
     def get_estado(self):
         return {"pontuacao": self.pontuacao, "vidas": self.vidas}
 
-    # --- MÉTODO DE LOG (Recebe as mensagens do jogo) ---
     def log_evento(self, categoria, mensagem):
         """
         Recebe logs do cliente (jogo.py) e imprime no terminal do servidor.
