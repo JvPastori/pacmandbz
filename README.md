@@ -61,5 +61,10 @@ Siga estes passos para garantir que o programa encontre todos os arquivos (image
 3.  Uma vez que seu terminal esteja **dentro** da pasta `pacman_project`, execute o script do menu, que está na subpasta `client`:
 
     ```bash
+    python client/server.py
+    ```
+    que imprime no terminal do servidor um registro de tudo o que acontece, permitindo monitorar o
+jogo remotamente e apos isso rodar o
+    ```
     python client/menu.py
     ```
