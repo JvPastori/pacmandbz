@@ -3,11 +3,10 @@ from xmlrpc.server import SimpleXMLRPCServer, SimpleXMLRPCRequestHandler
 from datetime import datetime
 import sys
 
-# Define a porta e o endereço
 HOST = 'localhost'
 PORT = 8000
 
-# Classe para manipular as requisições e garantir que o log padrão (POST) apareça
+# Para aparecer o (POST) no log do servidor
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/RPC2',)
 
@@ -21,19 +20,16 @@ class GameServer:
     def _hora(self):
         return datetime.now().strftime("%H:%M:%S")
 
-    # --- MÉTODOS DE JOGO ---
     def resetar_jogo(self):
         self.pontuacao = 0
         self.vidas = 3
         print(f"[{self._hora()}] JOGO: Novo jogo iniciado.")
-        sys.stdout.flush() # Força o print aparecer na hora
+        sys.stdout.flush()
         return True
 
     def processar_colisao_item(self, tipo):
         pts = 10 if tipo == "PONTO" else 50
         self.pontuacao += pts
-        # Se quiser printar cada ponto, descomente abaixo:
-        # print(f"[{self._hora()}] ITEM: Coletou {tipo}. Pontos: {self.pontuacao}")
         return self.pontuacao
 
     def processar_colisao_vilao(self):
@@ -57,7 +53,6 @@ class GameServer:
         sys.stdout.flush()
         return True
 
-# Configuração do Servidor
 # O 'requestHandler' garante que os logs de POST/IP/PORTA continuem aparecendo
 server = SimpleXMLRPCServer((HOST, PORT), requestHandler=RequestHandler, allow_none=True)
 server.register_instance(GameServer())
