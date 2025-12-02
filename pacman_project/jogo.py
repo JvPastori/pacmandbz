@@ -15,7 +15,6 @@ SERVER_URL = "http://localhost:8000"
 
 def chamar_servidor_thread(func_nome, *args):
     # Executa a comunicação com o servidor em uma Thread separada
-    # para evitar que o jogo congele ("travadinhas") enquanto espera a resposta.
     def target():
         try:
             temp_proxy = xmlrpc.client.ServerProxy(SERVER_URL)
@@ -75,7 +74,7 @@ def carregar_sons():
         SOM_SOCO.set_volume(0.4) 
     except: print("Erro ao carregar socodbz.mp3")
     try:
-        # Carregado como Sound (efeito) para tocar simultaneamente com a música de fundo
+        #  Sound (efeito) para tocar junto com a música de fundo
         SOM_SSJ = pygame.mixer.Sound('client/assets/ssj.mp3')
         SOM_SSJ.set_volume(0.7) 
     except: print("Erro ao carregar ssj.mp3")
@@ -105,8 +104,6 @@ def carregar_sprites():
             img_original = pygame.image.load(f"{CAMINHO_IMAGENS}esfera{i}.png").convert_alpha()
             img_pequena = pygame.transform.scale(img_original, (TAMANHO_ESFERA, TAMANHO_ESFERA))
             
-            # Cria uma superfície transparente para centralizar a esfera dentro do bloco 36x36
-            # Isso evita que o objeto fique no canto superior esquerdo da célula
             superficie_final = pygame.Surface((TAMANHO_BLOCO, TAMANHO_BLOCO), pygame.SRCALPHA)
             x_centro = (TAMANHO_BLOCO - TAMANHO_ESFERA) // 2
             y_centro = (TAMANHO_BLOCO - TAMANHO_ESFERA) // 2
@@ -190,7 +187,6 @@ class PacMan(pygame.sprite.Sprite):
         else: self.image.fill(AMARELO)
 
     def update(self, paredes):
-        # Lógica de movimento e alinhamento com a grade (grid)
         if self.passos_restantes == 0:
             if self.proximo_mudar_x != 0 or self.proximo_mudar_y != 0:
                 if self.proximo_mudar_x != 0: self.proximo_mudar_x = self.velocidade if self.proximo_mudar_x > 0 else -self.velocidade
@@ -228,7 +224,7 @@ class Fantasma(pygame.sprite.Sprite):
         self.image.fill((0,0,0,0)); movendo = (self.mudar_x != 0 or self.mudar_y != 0); estado = 'f' if movendo else 'p'
         img_base = SPRITES.get(self.nome_vilao, {}).get(estado)
         
-        # Freeza tem o sprite original virado para a esquerda, então invertemos a lógica para ele
+        # invertendo o freeza
         virar_imagem = self.olhando_esquerda
         if self.nome_vilao == 'FREEZA': virar_imagem = not virar_imagem
 
@@ -255,16 +251,19 @@ class Fantasma(pygame.sprite.Sprite):
         if self.passos_restantes <= 0:
             dirs_validas = []; dir_reversa = (-self.mudar_x, -self.mudar_y); alvo_x, alvo_y = 0, 0
             
-            # Lógica de Inteligência Artificial básica para cada vilão
+            # IA de cada vilão
             if pacman and not self.frightened:
-                if self.nome_vilao == 'FREEZA': alvo_x, alvo_y = pacman.rect.x, pacman.rect.y
+                if self.nome_vilao == 'FREEZA': alvo_x, alvo_y = pacman.rect.x, pacman.rect.y # Segue o Goku diretamente
+                
                 elif self.nome_vilao == 'VEGETA': # Tenta interceptar o Goku 4 blocos à frente
                     dx = 1 if pacman.mudar_x > 0 else (-1 if pacman.mudar_x < 0 else 0); dy = 1 if pacman.mudar_y > 0 else (-1 if pacman.mudar_y < 0 else 0)
                     alvo_x = pacman.rect.x + (dx * 4 * TAMANHO_BLOCO); alvo_y = pacman.rect.y + (dy * 4 * TAMANHO_BLOCO)
+                    
                 elif self.nome_vilao == 'CELL' and freeza_ref: # Vetor complexo baseado no Freeza e no Goku
                     dx = 1 if pacman.mudar_x > 0 else (-1 if pacman.mudar_x < 0 else 0); dy = 1 if pacman.mudar_y > 0 else (-1 if pacman.mudar_y < 0 else 0)
                     px = pacman.rect.x + (dx * 2 * TAMANHO_BLOCO); py = pacman.rect.y + (dy * 2 * TAMANHO_BLOCO)
                     vx = px - freeza_ref.rect.x; vy = py - freeza_ref.rect.y; alvo_x = px + vx; alvo_y = py + vy
+                    
                 else: # Boo (Aleatório/Híbrido)
                     d = math.hypot(pacman.rect.centerx - self.rect.centerx, pacman.rect.centery - self.rect.centery)
                     if (d/TAMANHO_BLOCO) > 8: alvo_x, alvo_y = pacman.rect.x, pacman.rect.y

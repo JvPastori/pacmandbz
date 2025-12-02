@@ -2,11 +2,9 @@ import pygame
 import sys
 import jogo  # Importa o módulo do jogo
 
-# Inicializa o Pygame e o Mixer (Som)
 pygame.init()
 pygame.mixer.init()
 
-# --- CONFIGURAÇÕES DE ASSETS DE SOM ---
 CAMINHO_SOM_CLIQUE = 'client/assets/click.wav' 
 CAMINHO_MUSICA_MENU = 'client/assets/menu_dbz.mp3' # Nova música
 
@@ -17,21 +15,19 @@ try:
 except:
     print("Som de clique não disponível.")
 
-# Tenta carregar e tocar a música do menu (INICIALIZAÇÃO)
 try:
     pygame.mixer.music.load(CAMINHO_MUSICA_MENU)
     pygame.mixer.music.set_volume(0.2) # Volume 20%
     pygame.mixer.music.play(-1) # -1 significa loop infinito
+    
 except Exception as e:
     print(f"Erro ao carregar música do menu: {e}")
 
-# --- CONFIGURAÇÕES DA TELA ---
 LARGURA = 800
 ALTURA = 600
 TELA = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption("DBZ Pac-Man: Menu Principal")
 
-# --- CORES ---
 PRETO = (0, 0, 0)
 BRANCO = (255, 255, 255)
 LARANJA_DBZ = (255, 128, 0)
@@ -41,11 +37,9 @@ COR_FUNDO_JANELA = (30, 40, 30)
 COR_BORDA_JANELA = (255, 215, 0)
 COR_TEXTO_PADRAO = (200, 200, 200)
 
-# Variáveis de controle
 mostrar_sobre = False 
 mostrar_ajuda = False 
 
-# --- CARREGAMENTO DE ASSETS (IMAGENS) ---
 def carregar_dupla_por_altura(nome_arquivo_base, altura_fixa):
     sprites = {'p': None, 'f': None}
     def carregar_unico(sufixo):
@@ -78,7 +72,6 @@ PERSONAGENS = {
     'MAJINBOO': {'imgs': carregar_dupla_por_altura('boo', ALTURA_PADRAO),    'pos': (600, Y_PADRAO)}
 }
 
-# --- FONTES ---
 try:
     fonte_grande = pygame.font.Font('client/assets/fonte.ttf', 50)
     fonte_media = pygame.font.Font('client/assets/fonte.ttf', 30)
@@ -88,7 +81,6 @@ except:
     fonte_media = pygame.font.Font(None, 50)
     fonte_pequena = pygame.font.Font(None, 36)
 
-# --- FUNÇÕES AUXILIARES ---
 def desenhar_texto(texto, fonte, cor, x, y):
     surf = fonte.render(texto, True, cor)
     rect = surf.get_rect(center=(x, y))
@@ -112,14 +104,13 @@ def desenhar_popup(titulo, linhas):
 def tocar_som():
     if som_clique: som_clique.play()
 
-# --- LOOP PRINCIPAL ---
 def menu_principal():
     global mostrar_sobre, mostrar_ajuda
     clock = pygame.time.Clock()
     timer_animacao = 0
     frame_atual = 'p'
     
-    # Garante que a música toque se voltar de um game over inesperado
+    # Garante que a música toque se voltar de um game over 
     if not pygame.mixer.music.get_busy():
         try:
             pygame.mixer.music.load(CAMINHO_MUSICA_MENU)
@@ -157,18 +148,16 @@ def menu_principal():
                         if btn['acao'] == 'jogar':
                             print("INICIANDO JOGO...")
                             
-                            # PARA A MÚSICA DO MENU ANTES DE ENTRAR NO JOGO
-                            pygame.mixer.music.stop()
+                            pygame.mixer.music.stop() # para msc menu
                             
                             try: jogo.main_jogo()
                             except Exception as e: print(f"Erro no jogo: {e}")
                             
-                            # VOLTA A TOCAR MÚSICA DO MENU AO SAIR DO JOGO
                             pygame.display.set_mode((LARGURA, ALTURA))
                             pygame.display.set_caption("DBZ Pac-Man: Menu Principal")
                             try:
                                 pygame.mixer.music.load(CAMINHO_MUSICA_MENU)
-                                pygame.mixer.music.set_volume(0.2) # <--- CORREÇÃO AQUI
+                                pygame.mixer.music.set_volume(0.2)
                                 pygame.mixer.music.play(-1)
                             except: pass
                             
@@ -195,9 +184,9 @@ def menu_principal():
             desenhar_texto(btn['texto'], fonte_media, BRANCO, btn['rect'].centerx, btn['rect'].centery)
             
         if mostrar_sobre:
-            desenhar_popup("SOBRE", ["Desenvolvido por:", "• Gabriel Ricetto", "• Joao Vitor Pastori", "• Victor Querino", "", "Materia de Redes", "3º ano - Ciencia da Computacao", "UNESPAR"])
+            desenhar_popup("SOBRE", ["Desenvolvido por:", "• Gabriel Ricetto", "• Joao Vitor Pastori", "• Victor Querino", "", "Materia de Redes", "3º ano - Ciencia da Computacao", "Universidade Estadual do Parana -UNESPAR"])
         if mostrar_ajuda:
-            desenhar_popup("AJUDA", ["COMANDOS:", "", "W, A, S, D - Movimentacao", "ESC - Sair/Voltar"])
+            desenhar_popup("AJUDA", ["COMANDOS:", "", "W - Mover para cima", "A - Mover para esquerda", "S - Mover para baixo", "D - Mover para direita", "ESC - Sair/Voltar"])
             
         pygame.display.flip()
 
