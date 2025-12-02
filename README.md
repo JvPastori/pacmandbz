@@ -19,6 +19,14 @@ Ela permite que a equipe se concentre na criatividade e nas mecânicas, sem prec
 
 Além disso, a Pygame é amplamente utilizada em projetos educacionais e protótipos, sendo ideal para o aprendizado de **lógica de programação, física simples e design de jogos**.
 
+
+## 📡 O Servidor de Monitoramento
+Diferente de um jogo simples offline, este projeto inclui um componente de **Servidor (`server.py`)**.
+
+Este script atua como um console de registros (logs). Ele deve rodar simultaneamente ao jogo para:
+- **Receber dados** enviados pelo cliente (o jogo);
+- **Imprimir um registro** detalhado de tudo o que acontece na partida em tempo real;
+- **Permitir o monitoramento remoto** do status da aplicação (erros, pontuações, conexões).
 ---
 
 ## 🖼️ Como a Pygame será usada no projeto
